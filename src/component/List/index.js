@@ -16,6 +16,7 @@ export default function List({
   handleCloses,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isDrag, setIsDrag] = useState(false);
   const open = Boolean(anchorEl);
   const first = row[0];
   const last = row[row?.length - 1];
@@ -68,13 +69,14 @@ export default function List({
             else return handleSelect(itm.type);
           }}
         >
-          <Icons type={itm.type}  />
+          <Icons type={itm.type} />
           <Text className="dialog-text">{itm.text}</Text>
         </div>
       );
     });
   };
 
+  //render menu wrapping
   const renderMenuWrap = () => {
     return (
       <Menu
@@ -93,9 +95,19 @@ export default function List({
     );
   };
 
+  //handle is Drag
+  const handleIsDrag = (ev) => {
+    ev.dataTransfer.setData("data", JSON.stringify(detail));
+  };
+
   return (
     <>
-      <div className="card-list-element">
+      <div
+        draggable
+        // style={{ height: isDrag ? "0" : "auto" }}
+        className="card-list-element"
+        onDragStart={handleIsDrag}
+      >
         <Text
           color="black"
           bold

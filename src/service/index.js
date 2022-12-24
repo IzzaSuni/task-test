@@ -50,14 +50,14 @@ export const postListTodos = async (id, data) => {
     .catch((err) => err);
 };
 
-export const editListTodos = async (id, data, targetId) => {
+export const editListTodos = async (id, data, targetId, target) => {
   return await customAxios({
     method: "PATCH",
     url: `/todos/${id}/items/${targetId}`,
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-    data: { target_todo_id: id, ...data },
+    data: { target_todo_id: target ? target : id, ...data },
   })
     .then((data) => data)
     .catch((err) => err);

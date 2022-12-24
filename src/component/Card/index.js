@@ -1,6 +1,6 @@
 import { Menu } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getListTodos } from "../../service";
+import { editListTodos, getListTodos } from "../../service";
 import Button from "../Button";
 import Label from "../Label";
 import List from "../List";
@@ -16,6 +16,7 @@ export default function Card({
   handleClose,
 }) {
   const [list, setList] = useState([]);
+  const [target, setTarget] = useState({});
 
   //get list todo
   useEffect(() => {
@@ -47,10 +48,25 @@ export default function Card({
     );
   };
 
+  const handleMove = (data) => {
+    return editListTodos(data.todo_id, {}, data.id, target).then(() =>
+      handleClose(true)
+    );
+  };
+
   //return
   return (
     <div
+      id={data.id}
       className="card"
+      onDrop={(ev) => {
+        const ok = JSON.parse(ev.dataTransfer.getData("data"));
+        return handleMove(ok);
+      }}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setTarget(data.id);
+      }}
       style={{
         background: theme.background,
         border: `1px solid ${theme.border}`,

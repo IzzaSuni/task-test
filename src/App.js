@@ -120,6 +120,7 @@ function App() {
               handleClose={handleClose}
             />
           ))}
+          {!todo && <Text>Loading</Text>}
         </div>
       </div>
     </>

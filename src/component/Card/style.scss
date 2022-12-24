@@ -1,0 +1,39 @@
+.card {
+  min-width: 326px;
+  padding: 16px;
+  border-radius: 4px;
+  height: fit-content;
+  &-title {
+    border-radius: 4px;
+    width: fit-content;
+    padding: 2px 8px;
+    border: 1px solid blue;
+    margin-bottom: 8px;
+  }
+  &-list {
+    &-element {
+      background-color: #fafafa;
+      border-radius: 4px;
+      padding: 16px;
+      border: 1px solid #e0e0e0;
+      &-title {
+        padding-bottom: 8px;
+        border-bottom: 1px #e0e0e0 dashed;
+      }
+    }
+    &-nolist {
+      padding: 8px 16px;
+      background-color: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+  }
+}
+
+.setting {
+  cursor: pointer;
+}
+.listWrap {
+  display: grid;
+  gap: 12px;
+}

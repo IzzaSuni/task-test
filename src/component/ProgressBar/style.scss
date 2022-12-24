@@ -1,0 +1,12 @@
+.progress {
+  border-radius: 9999px;
+  height: 16px;
+  &-wrap {
+    width: 175px;
+    border-radius: 9999px;
+    height: 16px;
+    background-color: #ededed;
+    display: flex;
+    margin-right: 12px;
+  }
+}

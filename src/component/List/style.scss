@@ -1,0 +1,34 @@
+.stroke-icon {
+  stroke: black;
+}
+.dialog {
+  &-wrapper {
+    width: 320px;
+    padding: 14px 16px;
+    display: grid;
+    gap: 12px;
+  }
+  &-item {
+    cursor: pointer;
+    color: inherit;
+  }
+  &-item:hover {
+    color: #01959f;
+  }
+  &-item:hover .stroke-icon {
+    stroke: #01959f;
+  }
+  &-delete {
+    color: black;
+    cursor: pointer;
+  }
+  &-delete:hover {
+    color: #e11428;
+  }
+  &-delete:hover .stroke-icon {
+    stroke: #e11428;
+  }
+  &-text {
+    font-weight: 600 !important;
+  }
+}

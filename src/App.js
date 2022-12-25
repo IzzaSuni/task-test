@@ -95,6 +95,12 @@ function App() {
     }
   };
 
+  // handle repeat index too choose theme index so it will always 0,1,2,3
+  const handleRepeat = (idx) => {
+    const multiple = Math.floor(idx / 4);
+    return idx < 4 ? idx : idx - 4 * multiple;
+  };
+
   //return
   return (
     <>
@@ -109,17 +115,20 @@ function App() {
           <Button icon={"plus.svg"}>Add New Group</Button>
         </div>
         <div className="task-main">
-          {todo?.map((itm, idx) => (
-            <Card
-              handleOpen={handleOpen}
-              theme={theme[idx]}
-              key={idx}
-              data={itm}
-              update={update}
-              row={row}
-              handleClose={handleClose}
-            />
-          ))}
+          {todo?.map((itm, idx) => {
+            const repeatedId = handleRepeat(idx);
+            return (
+              <Card
+                handleOpen={handleOpen}
+                theme={theme[repeatedId]}
+                key={idx}
+                data={itm}
+                update={update}
+                row={row}
+                handleClose={handleClose}
+              />
+            );
+          })}
           {!todo && <Text>Loading</Text>}
         </div>
       </div>

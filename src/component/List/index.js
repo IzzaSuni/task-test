@@ -16,7 +16,6 @@ export default function List({
   handleCloses,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isDrag, setIsDrag] = useState(false);
   const open = Boolean(anchorEl);
   const first = row[0];
   const last = row[row?.length - 1];
@@ -98,15 +97,19 @@ export default function List({
   //handle is Drag
   const handleIsDrag = (ev) => {
     ev.dataTransfer.setData("data", JSON.stringify(detail));
+    ev.target.classList.add("list-drag");
+  };
+  const handleEndDrag = (ev) => {
+    ev.target.classList.remove("list-drag");
   };
 
   return (
     <>
       <div
         draggable
-        // style={{ height: isDrag ? "0" : "auto" }}
         className="card-list-element"
         onDragStart={handleIsDrag}
+        onDragEnd={handleEndDrag}
       >
         <Text
           color="black"

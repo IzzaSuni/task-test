@@ -19,6 +19,7 @@ export default function Modal({ title, handleClose, open, type, id, detail }) {
     const name = event.target.name;
     if (name === "progress_percentage") {
       if (values >= 100) return setValue({ ...value, [name]: 100 });
+      if (!values || values <= 0) return setValue({ ...value, [name]: 0 });
     }
     setValue({ ...value, [name]: values });
   };

@@ -1,10 +1,8 @@
-import { Menu } from "@mui/material";
 import { useEffect, useState } from "react";
 import { editListTodos, getListTodos } from "../../service";
 import Button from "../Button";
 import Label from "../Label";
 import List from "../List";
-import ProgressBar from "../ProgressBar";
 import Text from "../Text";
 
 export default function Card({
@@ -29,7 +27,6 @@ export default function Card({
       <>
         {list?.map((itm, idx) => (
           <List
-            key={idx}
             progress={`${itm?.progress_percentage}%`}
             listTitle={itm?.name}
             handleOpen={handleOpen}
@@ -49,9 +46,22 @@ export default function Card({
   };
 
   const handleMove = (data) => {
-    return editListTodos(data.todo_id, {}, data.id, target).then(() =>
+    return editListTodos(data.todo_id, {}, data.id, target.id).then(() =>
       handleClose(true)
     );
+  };
+
+  // handle drop
+  const handleDrop = (event) => {
+    const ok = JSON.parse(event.dataTransfer.getData("data"));
+    if (ok.todo_id === target.id) return;
+    return handleMove(ok);
+  };
+
+  // handle dragover
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    return setTarget(data);
   };
 
   //return
@@ -59,14 +69,8 @@ export default function Card({
     <div
       id={data.id}
       className="card"
-      onDrop={(ev) => {
-        const ok = JSON.parse(ev.dataTransfer.getData("data"));
-        return handleMove(ok);
-      }}
-      onDragOver={(e) => {
-        e.preventDefault();
-        setTarget(data.id);
-      }}
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
       style={{
         background: theme.background,
         border: `1px solid ${theme.border}`,

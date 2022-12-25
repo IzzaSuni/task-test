@@ -32,3 +32,15 @@
     font-weight: 600 !important;
   }
 }
+
+.list {
+  &-drag {
+    transition: all 1ms;
+    transform: translateY(-110vh);
+  }
+  &-drop {
+    transition: all 0.1ms ease;
+    transform: translateY(0);
+    position: block;
+  }
+}

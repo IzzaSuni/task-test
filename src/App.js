@@ -1,50 +1,19 @@
-import logo from "./logo.svg";
 import "./App.scss";
 import Text from "./component/Text";
 import Button from "./component/Button";
-import { useEffect, useState } from "react";
-import { getTodos, login } from "./service";
+import { useState } from "react";
 import Card from "./component/Card";
 import { theme } from "./utils";
 import PopUp from "./molecules/PopUp";
 import Modal from "./component/Modal";
+import { useGetTodo } from "./hooks";
 
 function App() {
-  const [todo, setTodo] = useState();
-  const [row, setRow] = useState();
-  const [ready, setReady] = useState(false);
   const [open, setOpen] = useState({ state: false, detail: "" });
   const [update, setUpdate] = useState(false);
   const [modalType, setModalType] = useState("");
-
-  //getting todo data begin with login
-  useEffect(() => {
-    login().then(() =>
-      getTodos().then((e) => {
-        setTodo(e.data);
-        setReady(true);
-      })
-    );
-  }, []);
-
-  //getting todo data w/out login when update
-  useEffect(() => {
-    if (ready === true)
-      getTodos().then((e) => {
-        setTodo(e.data);
-      });
-  }, [update]);
-
-  // save todo id
-  useEffect(() => {
-    if (todo) {
-      let arr = [];
-      todo.map((e) => {
-        arr.push(e.id);
-      });
-      setRow(arr);
-    }
-  }, [todo]);
+  //hooks for getting data
+  const { row, todo } = useGetTodo();
 
   //handle open modal
   const handleOpen = (ev, detail) => {
@@ -58,41 +27,20 @@ function App() {
     setOpen({ state: false, detailId: "" });
   };
 
+  // refactor
   //select render modal
   const renderModal = (type) => {
-    switch (type) {
-      case "create":
-        return (
-          <Modal
-            type={"create"}
-            id={open.detail}
-            title={"Create Task"}
-            handleClose={handleClose}
-            open={open.state}
-          />
-        );
-      case "edit":
-        return (
-          <Modal
-            type={"edit"}
-            detail={open.detail}
-            title={"Edit Task"}
-            handleClose={handleClose}
-            open={open.state}
-          />
-        );
-      case "delete":
-        return (
-          <Modal
-            id={todo}
-            type={"delete"}
-            title={"Delete Task"}
-            detail={open.detail}
-            handleClose={handleClose}
-            open={open.state}
-          />
-        );
-    }
+    const firstText = `${type[0]?.toUpperCase() + type?.substring(1)}`;
+    const detail = type === "create" ? { id: open.detail } : open.detail;
+    return (
+      <Modal
+        type={type}
+        title={`${firstText} Task`}
+        handleClose={handleClose}
+        open={open.state}
+        detail={detail}
+      />
+    );
   };
 
   // handle repeat index too choose theme index so it will always 0,1,2,3
@@ -129,7 +77,7 @@ function App() {
               />
             );
           })}
-          {!todo && <Text>Loading</Text>}
+          {todo?.length === 0 && <Text>Loading...</Text>}
         </div>
       </div>
     </>

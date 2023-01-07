@@ -9,6 +9,7 @@
   transition: all 0.3s ease;
   background-color: rgba(64, 64, 64, 0.5);
   transition: all 0.3s ease;
+  opacity: 0;
   &-false {
     background-color: rgba(64, 64, 64, 0);
     animation: close ease 0.3s forwards;
@@ -16,6 +17,7 @@
   &-true {
     animation: show ease 0.3s forwards;
     background-color: rgba(64, 64, 64, 0.5);
+    opacity: 1;
   }
 }
 

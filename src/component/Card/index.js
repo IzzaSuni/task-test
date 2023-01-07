@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useGetListTodo } from "../../hooks";
 import { editListTodos, getListTodos } from "../../service";
 import Button from "../Button";
 import Label from "../Label";
@@ -7,19 +8,16 @@ import Text from "../Text";
 
 export default function Card({
   data,
-  theme,
-  handleOpen,
+  theme = 1,
+  handleOpen = () => {},
   update,
   row,
-  handleClose,
+  handleClose = () => {},
 }) {
-  const [list, setList] = useState([]);
   const [target, setTarget] = useState({});
 
   //get list todo
-  useEffect(() => {
-    getListTodos(data.id).then((val) => setList(val.data));
-  }, [update]);
+  const { list } = useGetListTodo(data.id, update);
 
   //render list
   const renderList = () => {
@@ -27,6 +25,7 @@ export default function Card({
       <>
         {list?.map((itm, idx) => (
           <List
+            key={idx}
             progress={`${itm?.progress_percentage}%`}
             listTitle={itm?.name}
             handleOpen={handleOpen}

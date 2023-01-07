@@ -17,6 +17,8 @@ export default function List({
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  //position define
   const first = row[0];
   const last = row[row?.length - 1];
 
@@ -59,13 +61,11 @@ export default function List({
             itm.type === "delete" ? "delete" : "item"
           } `}
           onClick={() => {
-            if (itm.type === "edit" || itm.type === "delete")
-              return handleSelect(itm.type, detail);
-            else if (itm.type === "right")
+            if (itm.type === "right")
               return handleMoveList(id, row[currentRow + 1], detail.id);
             else if (itm.type === "left")
               return handleMoveList(id, row[currentRow - 1], detail.id);
-            else return handleSelect(itm.type);
+            else return handleSelect(itm.type, detail);
           }}
         >
           <Icons type={itm.type} />
@@ -110,6 +110,7 @@ export default function List({
         className="card-list-element"
         onDragStart={handleIsDrag}
         onDragEnd={handleEndDrag}
+        id={detail.id}
       >
         <Text
           color="black"

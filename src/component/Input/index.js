@@ -16,6 +16,7 @@ export default function Input({
   shadow,
 }) {
   const [isFocus, Focus] = useState(false);
+  console.log(value)
   return (
     <>
       {label && (
@@ -36,14 +37,13 @@ export default function Input({
           value={value}
           onFocus={() => Focus(true)}
           onBlur={() => Focus(false)}
-          on
         />
         {shadow && (
           <Text
             color={isFocus ? "black" : " hsla(0, 0%, 25%, 0.5) "}
             className="shadow-text"
           >
-            {!value ? "0" : value}%
+            {!value ? 0 : value}%
           </Text>
         )}
       </div>

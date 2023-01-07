@@ -1,5 +1,3 @@
-import { checkPropTypes } from "prop-types";
-
 export default function Button({
   children,
   type = "primary",

@@ -1,40 +1,50 @@
-import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import {
-  deleteListTodos,
-  editListTodos,
-  getListTodos,
-  postListTodos,
-} from "../../service";
+import { deleteListTodos, editListTodos, postListTodos } from "../../service";
 import Button from "../Button";
 import Input from "../Input";
 import Text from "../Text";
 
-export default function Modal({ title, handleClose, open, type, id, detail }) {
-  const [value, setValue] = useState({ name: "", progress_percentage: 0 });
+export default function Modal({
+  title,
+  handleClose = () => {},
+  open,
+  type,
+  detail,
+  ...props
+}) {
+  const [value, setValue] = useState({ name: "", progress_percentage: "" });
 
   // handle change value
   const handleChange = (event) => {
-    const values = event.target.value;
+    let values = event.target.value;
     const name = event.target.name;
     if (name === "progress_percentage") {
+      values = parseInt(values);
       if (values >= 100) return setValue({ ...value, [name]: 100 });
       if (!values || values <= 0) return setValue({ ...value, [name]: 0 });
     }
     setValue({ ...value, [name]: values });
   };
 
-  // handle reset value when close popup
   useEffect(() => {
+    // handle reset value when close popup
     if (open === false) {
       setValue({ name: "", progress_percentage: 0 });
     }
-  }, [open]);
+    //handle set default value when click setting
+    if (detail)
+      setValue({
+        name: detail.name,
+        progress_percentage: detail.progress_percentage,
+      });
+  }, [open, detail]);
 
   // handle submit
   const handleSubmit = () => {
     if (type === "create") {
-      return postListTodos(id, value).then(() => handleClose(true));
+      return postListTodos(detail.id, value, props.bearer).then(() =>
+        handleClose(true)
+      );
     } else if (type === "edit") {
       return editListTodos(detail.todo_id, value, detail.id).then(() =>
         handleClose(true)
@@ -45,15 +55,6 @@ export default function Modal({ title, handleClose, open, type, id, detail }) {
       );
     }
   };
-
-  //handle set default value when click setting
-  useEffect(() => {
-    if (detail)
-      setValue({
-        name: detail.name,
-        progress_percentage: detail.progress_percentage,
-      });
-  }, [detail]);
 
   //select type of modal
   switch (type) {

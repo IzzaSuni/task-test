@@ -3,7 +3,6 @@ import Text from "../Text";
 export default function Label({ title, theme, desc }) {
   return (
     <>
-      {" "}
       <div
         className="card-title"
         style={{

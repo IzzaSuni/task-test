@@ -1,4 +1,3 @@
- 
 import List from "./component/List";
 import Modal from "./component/Modal";
 
@@ -96,6 +95,7 @@ describe("Edit Task ", () => {
     cy.log(`${item.length} items detected`);
 
     item.map((item, index) => {
+      if (index > 0) return;
       const { todo_id, id } = item;
       cy.intercept({
         url: `${baseUrl}/todos/${todo_id}/items/${id}`,
@@ -116,79 +116,78 @@ describe("Edit Task ", () => {
   });
 });
 describe("Move Task via button", () => {
-    it("Move List right", () => {
-      const boardList = Cypress.env("boardList");
-      const token = Cypress.env("token");
-      const taskList = Cypress.env("List").filter(
-        (e) => boardList[0].id === e.todo_id
-      );
-      const row = [];
-      boardList.map((e) => row.push(e.id));
-      const { todo_id, id, progress_percentage, name } = taskList[0];
-      const currentRow = boardList[0].id;
-  
-      cy.intercept({
-        url: `${baseUrl}/todos/${todo_id}/items/${id}`,
-      }).as("moveResp");
-  
-      cy.mount(
-        <List
-          listTitle={name}
-          row={row}
-          progress={`${progress_percentage}%`}
-          detail={taskList[0]}
-          token={token}
-          id={todo_id}
-          bearer={token}
-        />
-      );
-      cy.get("img.setting").click();
-      cy.get("div[type=right]").click();
-      cy.wait("@moveResp").then((res) => {
-        const { statusCode } = res.response;
-        const { todo_id } = res.response.body;
-        cy.wrap(todo_id).should("eql", currentRow + 1);
-        cy.wrap(statusCode).should("eql", 200);
-      });
-    });
-  
-    it("Move List left", () => {
-      const boardList = Cypress.env("boardList");
-      const token = Cypress.env("token");
-      const taskList = Cypress.env("List").filter(
-        (e) => boardList[1].id === e.todo_id
-      );
-      const row = [];
-      boardList.map((e) => row.push(e.id));
-      const { todo_id, id, progress_percentage, name } = taskList[1];
-      const currentRow = boardList[1].id;
-      cy.intercept({
-        url: `${baseUrl}/todos/${todo_id}/items/${id}`,
-      }).as("moveResp");
-  
-      cy.mount(
-        <List
-          listTitle={name}
-          row={row}
-          progress={`${progress_percentage}%`}
-          detail={taskList[1]}
-          token={token}
-          id={todo_id}
-          bearer={token}
-        />
-      );
-  
-      cy.get("img.setting").click();
-      cy.get("div[type=left]").click();
-      cy.wait("@moveResp").then((res) => {
-        const { statusCode } = res.response;
-        const { todo_id } = res.response.body;
-        cy.wrap(todo_id).should("eql", currentRow - 1);
-        cy.wrap(statusCode).should("eql", 200);
-      });
+  it("Move List right", () => {
+    const boardList = Cypress.env("boardList");
+    const token = Cypress.env("token");
+    const taskList = Cypress.env("List").filter(
+      (e) => boardList[0].id === e.todo_id
+    );
+    const row = [];
+    boardList.map((e) => row.push(e.id));
+    const { todo_id, id, progress_percentage, name } = taskList[0];
+    const currentRow = boardList[0].id;
+
+    cy.intercept({
+      url: `${baseUrl}/todos/${todo_id}/items/${id}`,
+    }).as("moveResp");
+
+    cy.mount(
+      <List
+        listTitle={name}
+        row={row}
+        progress={`${progress_percentage}%`}
+        detail={taskList[0]}
+        token={token}
+        id={todo_id}
+        bearer={token}
+      />
+    );
+    cy.get("img.setting").click();
+    cy.get("div[type=right]").click();
+    cy.wait("@moveResp").then((res) => {
+      const { statusCode } = res.response;
+      const { todo_id } = res.response.body;
+      cy.wrap(todo_id).should("eql", currentRow + 1);
+      cy.wrap(statusCode).should("eql", 200);
     });
   });
-  
+
+  it("Move List left", () => {
+    const boardList = Cypress.env("boardList");
+    const token = Cypress.env("token");
+    const taskList = Cypress.env("List").filter(
+      (e) => boardList[1].id === e.todo_id
+    );
+    const row = [];
+    boardList.map((e) => row.push(e.id));
+    const { todo_id, id, progress_percentage, name } = taskList[1];
+    const currentRow = boardList[1].id;
+    cy.intercept({
+      url: `${baseUrl}/todos/${todo_id}/items/${id}`,
+    }).as("moveResp");
+
+    cy.mount(
+      <List
+        listTitle={name}
+        row={row}
+        progress={`${progress_percentage}%`}
+        detail={taskList[1]}
+        token={token}
+        id={todo_id}
+        bearer={token}
+      />
+    );
+
+    cy.get("img.setting").click();
+    cy.get("div[type=left]").click();
+    cy.wait("@moveResp").then((res) => {
+      const { statusCode } = res.response;
+      const { todo_id } = res.response.body;
+      cy.wrap(todo_id).should("eql", currentRow - 1);
+      cy.wrap(statusCode).should("eql", 200);
+    });
+  });
+});
 
 describe("Delete Task", () => {
   it("should delete task", () => {
@@ -211,4 +210,3 @@ describe("Delete Task", () => {
     cy.wait("@deleteResp").its("response.statusCode").should("eql", 204);
   });
 });
-

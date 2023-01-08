@@ -82,31 +82,19 @@ export default function List({
     });
   };
 
-  //render menu wrapping
-  const renderMenuWrap = () => {
-    return (
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        elevation={0}
-        sx={{
-          "& .MuiPopover-paper": {
-            boxShadow: "0px 4px 4px rgb(0 0 0 / 8%) !important",
-          },
-        }}
-      >
-        <div className="dialog-wrapper">{handleMenu()}</div>
-      </Menu>
-    );
-  };
-
   //handle is Drag
   const handleIsDrag = (ev) => {
-    ev.dataTransfer.setData("data", JSON.stringify(detail));
-    ev.target.classList.add("list-drag");
+    const source = ev.target.id;
+    ev.dataTransfer.setData(
+      "data",
+      JSON.stringify({ ...detail, divId: source })
+    );
+    setTimeout(() =>
+      document.getElementById(source).classList.add("list-drag")
+    );
   };
   const handleEndDrag = (ev) => {
+    console.log(ev)
     ev.target.classList.remove("list-drag");
   };
 
@@ -114,7 +102,7 @@ export default function List({
     <>
       <div
         draggable
-        className="card-list-element"
+        className="list card-list-element"
         onDragStart={handleIsDrag}
         onDragEnd={handleEndDrag}
         id={detail.id}
@@ -139,7 +127,19 @@ export default function List({
           />
         </div>
       </div>
-      {renderMenuWrap()}
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        elevation={0}
+        sx={{
+          "& .MuiPopover-paper": {
+            boxShadow: "0px 4px 4px rgb(0 0 0 / 8%) !important",
+          },
+        }}
+      >
+        <div className="dialog-wrapper">{handleMenu()}</div>
+      </Menu>
     </>
   );
 }

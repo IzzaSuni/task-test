@@ -3,6 +3,8 @@
   padding: 16px;
   border-radius: 4px;
   height: fit-content;
+  transition: all 0.3s ease;
+  height: 100%;
   &-title {
     border-radius: 4px;
     width: fit-content;
@@ -12,10 +14,12 @@
   }
   &-list {
     &-element {
+      transition: all 0.3s ease;
       background-color: #fafafa;
       border-radius: 4px;
-      padding: 16px;
-      border: 1px solid #e0e0e0;
+      height: 0;
+      overflow: hidden;
+      animation: show 0.3s ease forwards;
       cursor: grab;
       &-title {
         padding-bottom: 8px;
@@ -35,6 +39,20 @@
   cursor: pointer;
 }
 .listWrap {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
+}
+
+@keyframes show {
+  from {
+    padding: 0;
+    border: 0;
+    height: 0;
+  }
+  to {
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+    height: auto;
+  }
 }

@@ -1,5 +1,5 @@
-import List from "./component/List";
-import Modal from "./component/Modal";
+import List from "../component/List";
+import Modal from "../component/Modal";
 
 const baseUrl = "https://todo-api-18-140-52-65.rakamin.com";
 
@@ -44,7 +44,6 @@ describe("Adding Task Each Board", () => {
     // board map loop
     list.forEach((item, idx) => {
       // interceptor check submit resp
-      if (idx > 0) return;
       cy.intercept({
         url: `${baseUrl}/todos/${item.id}/items`,
       }).as("checkSubmitRes");

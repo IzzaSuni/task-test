@@ -35,13 +35,10 @@
 
 .list {
   &-drag {
-    transition: all 1ms;
-    transform: translateY(-110vh);
-    // display: none;
-  }
-  &-drop {
-    transition: all 0.1ms ease;
-    transform: translateY(0);
-    position: block;
+    height: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    animation: none;
   }
 }

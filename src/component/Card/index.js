@@ -46,20 +46,15 @@ export default function Card({
   };
 
   const handleMove = async (data) => {
-    await editListTodos(
-      data.todo_id,
-      {},
-      data.id,
-      target.id,
-      props?.bearer
-    );
+    await editListTodos(data.todo_id, {}, data.id, target.id, props?.bearer);
     return handleClose(true);
   };
 
   // handle drop
   const handleDrop = (event) => {
     const ok = JSON.parse(event.dataTransfer.getData("data"));
-    if (ok.todo_id === target.id) return;
+    if (ok.todo_id === target.id )
+      return document.getElementById(ok.divId).classList.remove("list-drag");
     return handleMove(ok);
   };
 

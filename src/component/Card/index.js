@@ -30,7 +30,7 @@ export default function Card({
   const handleDrop = (event) => {
     const ok = JSON.parse(event.dataTransfer.getData("data"));
     if (ok.todo_id === target.id)
-      return document.getElementById(ok.divId).classList.remove("list-drag");
+      return document.getElementById(ok.divId)?.classList.remove("list-drag");
     return handleMove(ok);
   };
 

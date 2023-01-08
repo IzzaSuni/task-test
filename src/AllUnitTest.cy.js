@@ -115,6 +115,7 @@ describe("Edit Task ", () => {
     });
   });
 });
+
 describe("Move Task via button", () => {
   it("Move List right", () => {
     const boardList = Cypress.env("boardList");

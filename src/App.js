@@ -9,7 +9,7 @@ import Modal from "./component/Modal";
 import { useGetTodo } from "./hooks";
 
 function App() {
-  const [open, setOpen] = useState({ state: null, detail: "" });
+  const [open, setOpen] = useState({ state: false, detail: "" });
   const [update, setUpdate] = useState(false);
   const [modalType, setModalType] = useState("");
 

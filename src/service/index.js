@@ -67,12 +67,14 @@ export const editListTodos = (id, data, targetId, target, bearer) => {
     .catch((err) => err);
 };
 
-export const deleteListTodos = (id, targetId) => {
+export const deleteListTodos = (id, targetId, bearer) => {
   return customAxios({
     method: "DELETE",
     url: `/todos/${id}/items/${targetId}`,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${
+        bearer ? bearer : localStorage.getItem("token")
+      }`,
     },
   })
     .then((data) => data)

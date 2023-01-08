@@ -18,6 +18,7 @@ export default function List({
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
+  console.log(row);
   //position define
   const first = row[0];
   const last = row[row?.length - 1];

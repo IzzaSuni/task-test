@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGetListTodo } from "../../hooks";
 import { editListTodos, getListTodos } from "../../service";
 import Button from "../Button";
@@ -18,8 +18,9 @@ export default function Card({
   const [target, setTarget] = useState({});
 
   //get list todo
-  let { list } = useGetListTodo(data.id, update);
+  let { list, changeList } = useGetListTodo(data.id, update);
 
+  //handle move
   const handleMove = async (data) => {
     await editListTodos(data.todo_id, {}, data.id, target.id, props?.bearer);
     return handleClose(true);

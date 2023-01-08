@@ -8,6 +8,6 @@ export const theme = [
 export const swapPosition = (arr, item, target) => {
   let temp = arr[item];
   arr[item] = arr[target];
-  arr[target] = item;
+  arr[target] = temp;
   return arr;
 };

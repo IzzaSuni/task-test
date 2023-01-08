@@ -16,7 +16,9 @@
     "react-dnd": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "react-sortablejs": "^6.1.4",
     "sass": "^1.57.1",
+    "sortablejs": "^1.15.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -43,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.2.3"
   }
 }

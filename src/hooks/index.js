@@ -50,11 +50,15 @@ export const useGetListTodo = (id, update) => {
     }
   };
 
+  const changeList = (value) => {
+    setList(value);
+  };
+
   useEffect(() => {
     getData();
   }, [update]);
 
-  return { list };
+  return { list, changeList };
 };
 export const useModalHooks = (close, detail, open, changeValue) => {
   const postData = async (type, details, value, bearer) => {

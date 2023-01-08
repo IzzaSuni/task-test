@@ -5,7 +5,6 @@ import Input from "../Input";
 import Text from "../Text";
 
 export default function Modal({
-  title,
   handleClose = () => {},
   open,
   type,
@@ -14,10 +13,12 @@ export default function Modal({
 }) {
   const [value, setValue] = useState({ name: "", progress_percentage: 0 });
 
+  // change value from hooks
   const handleChangeFromHooks = (val) => {
     if (typeof val.name === "string") setValue(val);
   };
 
+  // hooks
   const { postData } = useModalHooks(
     handleClose,
     detail,
@@ -89,7 +90,7 @@ export default function Modal({
         <div className="modal">
           <div className="align-center justify-between">
             <Text size={"big"} bold style={{ marginBottom: "8px" }}>
-              {title}
+              {`${type[0]?.toUpperCase() + type?.substring(1)} Task`}
             </Text>
             <img
               src="/assets/close.svg"

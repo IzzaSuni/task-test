@@ -90,7 +90,7 @@ export default function List({
       JSON.stringify({ ...detail, divId: source })
     );
     setTimeout(() =>
-      document.getElementById(source).classList.add("list-drag")
+      ev.target?.classList.add("list-drag")
     );
   };
   const handleEndDrag = (ev) => {

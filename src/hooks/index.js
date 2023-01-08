@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { getListTodos, getTodos, login } from "../service";
+import {
+  deleteListTodos,
+  editListTodos,
+  getListTodos,
+  getTodos,
+  login,
+  postListTodos,
+} from "../service";
 
 export const useGetTodo = (update, Todo) => {
   const [todo, setTodo] = useState([]);
@@ -12,8 +19,6 @@ export const useGetTodo = (update, Todo) => {
         if (token) localStorage.setItem("token", token);
       }
       const res = await getTodos();
-      console.log(res);
-      console.log(res);
       if (res) {
         const arr = [];
         res?.map((item) => arr.push(item.id));
@@ -50,4 +55,34 @@ export const useGetListTodo = (id, update) => {
   }, [update]);
 
   return { list };
+};
+export const useModalHooks = (close, detail, open, changeValue) => {
+  const postData = async (type, details, value, bearer) => {
+    try {
+      if (type === "create") {
+        await postListTodos(details.id, value, bearer);
+        // return changeValue()
+      } else if (type === "edit") {
+        await editListTodos(details.todo_id, value, details.id, "", bearer);
+      } else if (type === "delete") {
+        await deleteListTodos(details.todo_id, details.id, bearer);
+      }
+      return close(true);
+    } catch (err) {
+      console.log(err);
+      return close(true);
+    }
+  };
+  useEffect(() => {
+    if (open) {
+      changeValue({ name: "", progress_percentage: 0 });
+    }
+    if (detail)
+      changeValue({
+        name: detail.name,
+        progress_percentage: detail.progress_percentage,
+      });
+  }, [open, detail]);
+
+  return { postData };
 };

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { deleteListTodos, editListTodos, postListTodos } from "../../service";
+import { useState } from "react";
+import { useModalHooks } from "../../hooks";
 import Button from "../Button";
 import Input from "../Input";
 import Text from "../Text";
@@ -12,7 +12,18 @@ export default function Modal({
   detail,
   ...props
 }) {
-  const [value, setValue] = useState({ name: "", progress_percentage: "" });
+  const [value, setValue] = useState({ name: "", progress_percentage: 0 });
+
+  const handleChangeFromHooks = (val) => {
+    if (typeof val.name === "string") setValue(val);
+  };
+
+  const { postData } = useModalHooks(
+    handleClose,
+    detail,
+    open,
+    handleChangeFromHooks
+  );
 
   // handle change value
   const handleChange = (event) => {
@@ -26,34 +37,9 @@ export default function Modal({
     setValue({ ...value, [name]: values });
   };
 
-  useEffect(() => {
-    // handle reset value when close popup
-    if (open === false) {
-      setValue({ name: "", progress_percentage: 0 });
-    }
-    //handle set default value when click setting
-    if (detail)
-      setValue({
-        name: detail.name,
-        progress_percentage: detail.progress_percentage,
-      });
-  }, [open, detail]);
-
   // handle submit
   const handleSubmit = () => {
-    if (type === "create") {
-      return postListTodos(detail.id, value, props.bearer).then(() =>
-        handleClose(true)
-      );
-    } else if (type === "edit") {
-      return editListTodos(detail.todo_id, value, detail.id).then(() =>
-        handleClose(true)
-      );
-    } else if (type === "delete") {
-      return deleteListTodos(detail.todo_id, detail.id).then(() =>
-        handleClose(true)
-      );
-    }
+    postData(type, detail, value, props.bearer);
   };
 
   //select type of modal

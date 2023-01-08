@@ -57,9 +57,9 @@ export const editListTodos = (id, data, targetId, target, bearer) => {
     method: "PATCH",
     url: `/todos/${id}/items/${targetId}`,
     headers: {
-      Authorization: bearer
-        ? bearer
-        : `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${
+        bearer ? bearer : localStorage.getItem("token")
+      }`,
     },
     data: { target_todo_id: target ? target : id, ...data },
   })

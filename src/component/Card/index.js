@@ -13,6 +13,7 @@ export default function Card({
   update,
   row,
   handleClose = () => {},
+  ...props
 }) {
   const [target, setTarget] = useState({});
 
@@ -44,10 +45,15 @@ export default function Card({
     );
   };
 
-  const handleMove = (data) => {
-    return editListTodos(data.todo_id, {}, data.id, target.id).then(() =>
-      handleClose(true)
+  const handleMove = async (data) => {
+    await editListTodos(
+      data.todo_id,
+      {},
+      data.id,
+      target.id,
+      props?.bearer
     );
+    return handleClose(true);
   };
 
   // handle drop

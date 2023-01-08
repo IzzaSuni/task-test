@@ -10,15 +10,15 @@ export default function List({
   id,
   listTitle,
   progress,
-  handleOpen,
+  handleOpen = () => {},
   detail,
   row,
-  handleCloses,
+  handleCloses = () => {},
+  ...props
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  console.log(row);
   //position define
   const first = row[0];
   const last = row[row?.length - 1];
@@ -40,11 +40,16 @@ export default function List({
   };
 
   // handle move list
-  const handleMoveList = (id, target, detailId) => {
-    editListTodos(id, { target_todo_id: target }, detailId).then(() => {
-      handleCloses(true);
-      handleClose();
-    });
+  const handleMoveList = async (id, target, detailId) => {
+    await editListTodos(
+      id,
+      { target_todo_id: target },
+      detailId,
+      "",
+      props?.bearer
+    );
+    handleCloses(true);
+    return handleClose();
   };
 
   // handle render menu
@@ -61,6 +66,7 @@ export default function List({
           className={`align-center dialog-${
             itm.type === "delete" ? "delete" : "item"
           } `}
+          type={itm.type}
           onClick={() => {
             if (itm.type === "right")
               return handleMoveList(id, row[currentRow + 1], detail.id);

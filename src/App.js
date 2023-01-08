@@ -28,22 +28,6 @@ function App() {
     setOpen({ state: false, detailId: "" });
   };
 
-  // refactor
-  //select render modal
-  const renderModal = (type) => {
-    const firstText = `${type[0]?.toUpperCase() + type?.substring(1)}`;
-    const detail = type === "create" ? { id: open.detail } : open.detail;
-    return (
-      <Modal
-        type={type}
-        title={`${firstText} Task`}
-        handleClose={handleClose}
-        open={open.state}
-        detail={detail}
-      />
-    );
-  };
-
   // handle repeat index too choose theme index so it will always 0,1,2,3
   const handleRepeat = (idx) => {
     const multiple = Math.floor(idx / 4);
@@ -54,7 +38,12 @@ function App() {
   return (
     <>
       <PopUp handleClose={handleClose} open={open.state}>
-        {renderModal(modalType)}
+        <Modal
+          type={modalType}
+          handleClose={handleClose}
+          open={open.state}
+          detail={modalType === "create" ? { id: open.detail } : open.detail}
+        />
       </PopUp>
 
       <div className="task">

@@ -18,32 +18,7 @@ export default function Card({
   const [target, setTarget] = useState({});
 
   //get list todo
-  const { list } = useGetListTodo(data.id, update);
-
-  //render list
-  const renderList = () => {
-    return (
-      <>
-        {list?.map((itm, idx) => (
-          <List
-            key={idx}
-            progress={`${itm?.progress_percentage}%`}
-            listTitle={itm?.name}
-            handleOpen={handleOpen}
-            detail={itm}
-            row={row}
-            id={data.id}
-            handleCloses={handleClose}
-          />
-        ))}
-        {list.length === 0 && (
-          <div className="card-list-nolist">
-            <Text color="#757575">No Task</Text>
-          </div>
-        )}
-      </>
-    );
-  };
+  let { list } = useGetListTodo(data.id, update);
 
   const handleMove = async (data) => {
     await editListTodos(data.todo_id, {}, data.id, target.id, props?.bearer);
@@ -53,7 +28,7 @@ export default function Card({
   // handle drop
   const handleDrop = (event) => {
     const ok = JSON.parse(event.dataTransfer.getData("data"));
-    if (ok.todo_id === target.id )
+    if (ok.todo_id === target.id)
       return document.getElementById(ok.divId).classList.remove("list-drag");
     return handleMove(ok);
   };
@@ -77,7 +52,25 @@ export default function Card({
       }}
     >
       <Label desc={data?.description} theme={theme} title={data?.title} />
-      <div className="listWrap">{renderList()}</div>
+      <div className="listWrap">
+        {list?.map((itm, idx) => (
+          <List
+            key={idx}
+            progress={`${itm?.progress_percentage}%`}
+            listTitle={itm?.name}
+            handleOpen={handleOpen}
+            detail={itm}
+            row={row}
+            id={data.id}
+            handleCloses={handleClose}
+          />
+        ))}
+        {list.length === 0 && (
+          <div className="card-list-nolist">
+            <Text color="#757575">No Task</Text>
+          </div>
+        )}
+      </div>
       <Button
         type="base"
         style={{ marginTop: "8px" }}

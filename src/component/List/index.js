@@ -94,9 +94,9 @@ export default function List({
     );
   };
   const handleEndDrag = (ev) => {
-    console.log(ev)
     ev.target.classList.remove("list-drag");
   };
+  
 
   return (
     <>

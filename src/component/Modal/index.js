@@ -59,7 +59,7 @@ export default function Modal({
                 onClick={handleClose}
               />
               <Text size={"big"} bold>
-                {title}
+                {`${type[0]?.toUpperCase() + type?.substring(1)} Task`}
               </Text>
             </div>
             <img

@@ -4,3 +4,10 @@ export const theme = [
   { color: "#E11428", background: "#FFFCF5", border: "#F5B1B7" },
   { color: "#43936C", background: "#F8FBF9", border: "#B8DBCA" },
 ];
+
+export const swapPosition = (arr, item, target) => {
+  let temp = arr[item];
+  arr[item] = arr[target];
+  arr[target] = item;
+  return arr;
+};

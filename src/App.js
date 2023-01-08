@@ -12,6 +12,7 @@ function App() {
   const [open, setOpen] = useState({ state: false, detail: "" });
   const [update, setUpdate] = useState(false);
   const [modalType, setModalType] = useState("");
+
   //hooks for getting data
   const { row, todo } = useGetTodo();
 
@@ -23,7 +24,7 @@ function App() {
 
   //handle close modal
   const handleClose = (ev) => {
-    if (ev) setUpdate(!update);
+    if (ev === true) setUpdate(!update);
     setOpen({ state: false, detailId: "" });
   };
 

@@ -52,12 +52,14 @@ export const postListTodos = (id, data, bearer) => {
     .catch((err) => err);
 };
 
-export const editListTodos = (id, data, targetId, target) => {
+export const editListTodos = (id, data, targetId, target, bearer) => {
   return customAxios({
     method: "PATCH",
     url: `/todos/${id}/items/${targetId}`,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: bearer
+        ? bearer
+        : `Bearer ${localStorage.getItem("token")}`,
     },
     data: { target_todo_id: target ? target : id, ...data },
   })

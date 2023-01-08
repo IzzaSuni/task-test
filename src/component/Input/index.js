@@ -16,7 +16,6 @@ export default function Input({
   shadow,
 }) {
   const [isFocus, Focus] = useState(false);
-  console.log(value)
   return (
     <>
       {label && (

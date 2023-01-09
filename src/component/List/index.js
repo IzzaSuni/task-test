@@ -14,6 +14,7 @@ export default function List({
   detail,
   row,
   handleCloses = () => {},
+  index,
   ...props
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,7 +22,7 @@ export default function List({
 
   //position define
   const first = row[0];
-  const last = row[row?.length - 1];
+  const last = row[row?.length];
 
   //handle set anchor and open dialog
   const handleClick = (event) => {
@@ -50,6 +51,31 @@ export default function List({
     );
     handleCloses(true);
     return handleClose();
+  };
+
+
+  //handle is Drag
+  const handleIsDrag = (ev) => {
+    const source = ev.target.id;
+    const order = ev.currentTarget.getAttribute("order");
+
+    ev.dataTransfer.setData(
+      "data",
+      JSON.stringify({ ...detail, divId: source, order })
+    );
+    setTimeout(() => ev.target.classList.add("list-drag"));
+  };
+
+  // handle end drag
+  const handleEndDrag = (ev) => {
+    ev.target.classList.remove("list-drag");
+  };
+
+  // // handle drag hover
+  const handleDragEnter = (ev) => {
+    const todo_id = ev.currentTarget.getAttribute("todo_id");
+    const order = ev.currentTarget.getAttribute("order");
+    props.doSetListTarget(order, todo_id);
   };
 
   // handle render menu
@@ -82,22 +108,6 @@ export default function List({
     });
   };
 
-  //handle is Drag
-  const handleIsDrag = (ev) => {
-    const source = ev.target.id;
-    ev.dataTransfer.setData(
-      "data",
-      JSON.stringify({ ...detail, divId: source })
-    );
-    setTimeout(() =>
-      ev.target?.classList.add("list-drag")
-    );
-  };
-  const handleEndDrag = (ev) => {
-    ev.target.classList.remove("list-drag");
-  };
-  
-
   return (
     <>
       <div
@@ -105,7 +115,10 @@ export default function List({
         className="list card-list-element"
         onDragStart={handleIsDrag}
         onDragEnd={handleEndDrag}
+        onDragEnter={handleDragEnter}
         id={detail.id}
+        todo_id={detail.todo_id}
+        order={index}
       >
         <Text
           color="black"

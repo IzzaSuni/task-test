@@ -6,8 +6,16 @@ export const theme = [
 ];
 
 export const swapPosition = (arr, item, target) => {
-  let temp = arr[item];
-  arr[item] = arr[target];
-  arr[target] = temp;
-  return arr;
+  const newArr = arr.slice();
+  let temp = newArr[item];
+  newArr[item] = newArr[target];
+  newArr[target] = temp;
+  return { newArr };
+};
+
+export const swapMovePosition = (arr, target, obj) => {
+  console.log(obj);
+  const newArr2 = arr.slice();
+  newArr2.splice(target, 0, obj);
+  return { newArr2 };
 };

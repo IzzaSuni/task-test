@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetListTodo } from "../../hooks";
 import { editListTodos, getListTodos } from "../../service";
 import Button from "../Button";
@@ -15,21 +15,42 @@ export default function Card({
   handleClose = () => {},
   ...props
 }) {
-  const [target, setTarget] = useState({});
+  const [boardTarget, setboardTarget] = useState({});
+  const [swap, setSwap] = useState({ src: "", target: "" });
+  const [manipulated, setManipulated] = useState();
 
   //get list todo
-  let { list, changeList } = useGetListTodo(data.id, update);
+  let { list, changeList } = useGetListTodo(data.id, update, manipulated, swap);
+
+  const doSetListTarget = (id, todo_id) => {
+    setSwap({ src: "", target: { id: Number(id), todo_id: Number(todo_id) } });
+  };
+  console.log(swap)
+  useEffect(() => {
+    if (swap.target.todo_id === swap.src.todo_id) changeList();
+  }, [swap]);
 
   //handle move
   const handleMove = async (data) => {
-    await editListTodos(data.todo_id, {}, data.id, target.id, props?.bearer);
+    await editListTodos(
+      data.todo_id,
+      {},
+      data.id,
+      boardTarget.id,
+      props?.bearer
+    );
     return handleClose(true);
   };
 
   // handle drop
   const handleDrop = (event) => {
     const ok = JSON.parse(event.dataTransfer.getData("data"));
-    if (ok.todo_id === target.id)
+    setSwap({
+      ...swap,
+      src: { id: Number(ok.order), todo_id: Number(ok.todo_id) },
+    });
+    setManipulated(true);
+    if (ok.todo_id === boardTarget.id)
       return document.getElementById(ok.divId)?.classList.remove("list-drag");
     return handleMove(ok);
   };
@@ -37,7 +58,7 @@ export default function Card({
   // handle dragover
   const handleDragOver = (event) => {
     event.preventDefault();
-    return setTarget(data);
+    return setboardTarget(data);
   };
 
   //return
@@ -64,6 +85,8 @@ export default function Card({
             row={row}
             id={data.id}
             handleCloses={handleClose}
+            doSetListTarget={doSetListTarget}
+            index={idx}
           />
         ))}
         {list.length === 0 && (

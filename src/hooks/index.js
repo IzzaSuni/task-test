@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { useEffect, useState } from "react";
 import {
   deleteListTodos,
@@ -7,6 +8,7 @@ import {
   login,
   postListTodos,
 } from "../service";
+import { swapMovePosition, swapPosition } from "../utils";
 
 export const useGetTodo = (update, Todo) => {
   const [todo, setTodo] = useState([]);
@@ -36,22 +38,43 @@ export const useGetTodo = (update, Todo) => {
 
   return { todo, row };
 };
-export const useGetListTodo = (id, update) => {
+export const useGetListTodo = (id, update, manipulate, swap) => {
   const [list, setList] = useState([]);
   const getData = async () => {
     try {
       const res = await getListTodos(id);
       if (!res) return;
       if (res) {
-        return setList(res.data);
+        const arr = res.data;
+        const arrId = [];
+        const oldArrayId = [];
+        arr.map((e) => arrId.push(e.id));
+        list.map((e) => oldArrayId.push(e.id));
+        const updatedId = arrId.filter((newId) => !oldArrayId.includes(newId));
+        if (updatedId && manipulate) {
+          const objNew = arr.find((e) => e.id === updatedId[0]);
+          setList(arr);
+          return changeList(objNew);
+        }
+        return setList(arr);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const changeList = (value) => {
-    setList(value);
+  const changeList = (objNew) => {
+    if (typeof swap.src.id === "number" && typeof swap.target.id === "number") {
+      if (swap.src.todo_id === swap.target.todo_id) {
+        const { newArr } = swapPosition(list, swap.src.id, swap.target.id);
+        setList(newArr);
+      } else {
+        if (objNew) {
+          const { newArr2 } = swapMovePosition(list, swap.target.id, objNew);
+          setList(newArr2);
+        }
+      }
+    }
   };
 
   useEffect(() => {

@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { useEffect, useState } from "react";
 import {
   deleteListTodos,
@@ -46,10 +45,11 @@ export const useGetListTodo = (id, update, manipulate, swap) => {
       if (!res) return;
       if (res) {
         const arr = res.data;
+        arr.forEach((e, i) => (e.order = i));
         const arrId = [];
         const oldArrayId = [];
-        arr.map((e) => arrId.push(e.id));
-        list.map((e) => oldArrayId.push(e.id));
+        arr.forEach((e) => arrId.push(e.id));
+        list.forEach((e) => oldArrayId.push(e.id));
         const updatedId = arrId.filter((newId) => !oldArrayId.includes(newId));
         if (updatedId && manipulate) {
           const objNew = arr.find((e) => e.id === updatedId[0]);
@@ -67,10 +67,12 @@ export const useGetListTodo = (id, update, manipulate, swap) => {
     if (typeof swap.src.id === "number" && typeof swap.target.id === "number") {
       if (swap.src.todo_id === swap.target.todo_id) {
         const { newArr } = swapPosition(list, swap.src.id, swap.target.id);
+        newArr.forEach((e, i) => (e.order = i));
         setList(newArr);
       } else {
         if (objNew) {
           const { newArr2 } = swapMovePosition(list, swap.target.id, objNew);
+          newArr2.forEach((e, i) => (e.order = i));
           setList(newArr2);
         }
       }

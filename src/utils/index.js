@@ -14,7 +14,6 @@ export const swapPosition = (arr, item, target) => {
 };
 
 export const swapMovePosition = (arr, target, obj) => {
-  console.log(obj);
   const newArr2 = arr.slice();
   newArr2.splice(target, 0, obj);
   return { newArr2 };

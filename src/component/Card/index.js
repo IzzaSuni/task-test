@@ -26,7 +26,6 @@ export default function Card({
   const doSetListTarget = (id, todo_id) => {
     setSwap({ src: "", target: { id: Number(id), todo_id: Number(todo_id) } });
   };
-  console.log(swap);
   useEffect(() => {
     if (swap.target.todo_id === swap.src.todo_id) changeList();
   }, [swap]);
